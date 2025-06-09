@@ -1,5 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
+const pool = require('./db');
+
 
 const token = '7597057776:AAEWjSDt51rng3We7CljUfW3aWP119ke9TQ';
 const bot = new TelegramBot(token, { polling: true });
@@ -92,7 +94,7 @@ bot.on('message', async (msg) => {
 
     if (texto === '📋 ver pedidos') {
       try {
-        const res = await axios.get('http://localhost:3000/pedidos');
+        const res = await axios.get('https://agente-ventas-telegram.onrender.com/pedidos');
         const pedidos = res.data;
 
         if (!pedidos.length) {
@@ -162,7 +164,7 @@ bot.on('message', async (msg) => {
     }
 
     try {
-      const res = await axios.get(`http://localhost:3000/pedidos/${id}`);
+      const res = await axios.get(`https://agente-ventas-telegram.onrender.com/pedidos/${id}`);
       const pedido = res.data;
       const fechaCreacion = new Date(pedido.fecha);
       const ahora = new Date();
@@ -273,7 +275,7 @@ bot.on('message', async (msg) => {
   const { tipo_prenda, talla, color, id_modificar } = estado;
 
   try {
-    const check = await axios.post('http://localhost:3000/productos/search', {
+    const check = await axios.post('https://agente-ventas-telegram.onrender.com/productos/search', {
       tipo_prenda,
       talla,
       color
@@ -303,7 +305,7 @@ bot.on('message', async (msg) => {
       return mostrarMenuPrincipal(chatId);
     }
 
-    const res = await axios.put(`http://localhost:3000/editar-pedido/${id_modificar}`, {
+    const res = await axios.put(`https://agente-ventas-telegram.onrender.com/editar-pedido/${id_modificar}`, {
       tipo_prenda,
       talla,
       color,
@@ -326,7 +328,7 @@ bot.on('message', async (msg) => {
     }
 
     try {
-      const res = await axios.delete(`http://localhost:3000/pedidos/${id}`);
+      const res = await axios.delete(`https://agente-ventas-telegram.onrender.com/pedidos/${id}`);
       userState[chatId] = {};
       bot.sendMessage(chatId, `✅ Pedido con ID ${id} eliminado correctamente.`);
       return mostrarMenuPrincipal(chatId);
@@ -414,7 +416,7 @@ bot.on('message', async (msg) => {
   const { tipo_prenda, talla, color } = estado;
 
   try {
-    const check = await axios.post('http://localhost:3000/productos/search', {
+    const check = await axios.post('https://agente-ventas-telegram.onrender.com/productos/search', {
       tipo_prenda,
       talla,
       color
@@ -444,7 +446,7 @@ bot.on('message', async (msg) => {
       return mostrarMenuPrincipal(chatId);
     }
 
-    const response = await axios.post('http://localhost:3000/pedidos', {
+    const response = await axios.post('https://agente-ventas-telegram.onrender.com/pedidos', {
       tipo_prenda,
       talla,
       color,
@@ -465,7 +467,7 @@ bot.on('message', async (msg) => {
 
   if (estado.etapa === 'esperando_prenda_stock') {
   try {
-    const res = await axios.get(`http://localhost:3000/stock?tipo_prenda=${encodeURIComponent(texto)}`);
+    const res = await axios.get(`https://agente-ventas-telegram.onrender.com/stock?tipo_prenda=${encodeURIComponent(texto)}`);
     if (!res.data.length) {
       return bot.sendMessage(chatId, '❌ No se encontró stock para esa prenda.');
     }
@@ -547,7 +549,7 @@ bot.on('message', async (msg) => {
   const color = texto;
 
   try {
-    const res = await axios.get(`http://localhost:3000/stock?tipo_prenda=${encodeURIComponent(tipo_prenda)}&talla=${encodeURIComponent(talla)}&color=${encodeURIComponent(color)}`);
+    const res = await axios.get(`https://agente-ventas-telegram.onrender.com/stock?tipo_prenda=${encodeURIComponent(tipo_prenda)}&talla=${encodeURIComponent(talla)}&color=${encodeURIComponent(color)}`);
 
     if (!res.data.length) {
       return bot.sendMessage(chatId, '❌ No se encontró stock para esa combinación.');
@@ -579,7 +581,7 @@ bot.on('message', async (msg) => {
   }
 
   try {
-    const res = await axios.get(`http://localhost:3000/productos/filtrar?tipo_prenda=${encodeURIComponent(texto)}`);
+    const res = await axios.get(`https://agente-ventas-telegram.onrender.com/productos/filtrar?tipo_prenda=${encodeURIComponent(texto)}`);
     const productos = res.data;
 
     if (!productos.length) {
