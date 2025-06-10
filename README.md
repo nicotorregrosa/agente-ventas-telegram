@@ -68,8 +68,7 @@ Estos son manejados desde `index.js`:
 1. Cloná el repositorio:
 
 ```bash
-git clone https://github.com/tu_usuario/tu_repositorio.git
-cd tu_repositorio
+git clone https://github.com/nicotorregrosa/agente-ventas-telegram.git
 ```
 
 2. Instalá las dependencias (Con node.js instalado previamente):
